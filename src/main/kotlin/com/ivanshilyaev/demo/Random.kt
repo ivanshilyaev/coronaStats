@@ -1,4 +1,4 @@
-package cloud.folium.mpr.test.random
+package com.ivanshilyaev.demo
 
 import com.github.mangatmodi.randomjson.RandomJsonCreator
 import com.github.mangatmodi.randomjson.config.RandomJsonConfig
@@ -30,7 +30,7 @@ fun randomPort(): Int = Random().nextInt(65536)
 fun randomUrl(): String = MockNeat.threadLocal().urls().`val`()
 
 fun randomPath(partsCount: Int = 3) = "/" +
-        IntArray(partsCount).mapIndexed { i, _ -> randomStr(i + 1).toLowerCase() }.joinToString("/")
+    IntArray(partsCount).mapIndexed { i, _ -> randomStr(i + 1).toLowerCase() }.joinToString("/")
 
 fun randomQuery(paramsCount: Int = 3) =
     IntArray(paramsCount).mapIndexed { i, _ -> "${randomStr(i + 1)}=${randomStr(7)}" }.joinToString("&")

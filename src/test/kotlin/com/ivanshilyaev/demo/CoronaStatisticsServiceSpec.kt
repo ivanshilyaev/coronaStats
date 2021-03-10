@@ -1,6 +1,5 @@
 package com.ivanshilyaev.demo
 
-import cloud.folium.mpr.test.random.randomJson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.nhaarman.mockito_kotlin.any

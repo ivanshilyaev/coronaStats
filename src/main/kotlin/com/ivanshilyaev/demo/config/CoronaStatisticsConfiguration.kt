@@ -1,6 +1,6 @@
 package com.ivanshilyaev.demo.config
 
-import com.ivanshilyaev.demo.service.CoronaStatisticsService
+import com.ivanshilyaev.demo.service.DefaultCoronaStatisticsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration
 class CoronaStatisticsConfiguration {
 
     @Bean
-    fun coronaStatisticsService() = CoronaStatisticsService()
+    fun coronaStatisticsService() = DefaultCoronaStatisticsService()
 }

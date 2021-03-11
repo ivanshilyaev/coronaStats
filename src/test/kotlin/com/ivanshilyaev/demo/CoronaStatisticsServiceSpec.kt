@@ -2,7 +2,7 @@ package com.ivanshilyaev.demo
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.ivanshilyaev.demo.service.CoronaStatisticsService
+import com.ivanshilyaev.demo.service.DefaultCoronaStatisticsService
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
@@ -18,15 +18,16 @@ import java.net.http.HttpResponse
 
 internal class CoronaStatisticsServiceSpec : Spek({
 
-    describe("#${CoronaStatisticsService::getAllStatistics.name}") {
+    describe("#${DefaultCoronaStatisticsService::getAllStatistics.name}") {
 
         val client = mock<HttpClient>()
 
-        val service = CoronaStatisticsService(client)
+        val service = DefaultCoronaStatisticsService(client)
 
         beforeEachTest { reset(client) }
 
         on("valid response from http client") {
+
             val response = mock<HttpResponse<String>>()
             whenever(client.send(any(), any<HttpResponse.BodyHandler<String>>())).thenReturn(response)
 
@@ -41,6 +42,7 @@ internal class CoronaStatisticsServiceSpec : Spek({
             val result = run { service.getAllStatistics() }
 
             it("returns pretty json") {
+
                 result shouldBe jsonString
             }
         }

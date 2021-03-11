@@ -16,6 +16,6 @@ class CoronaStatisticsController() {
     @GetMapping("/")
     fun findAll(): String {
 
-        return "<pre>" + coronaStatisticsService.getAllStatistics() + "</pre>"
+        return coronaStatisticsService.getAllStatistics().toString()
     }
 }

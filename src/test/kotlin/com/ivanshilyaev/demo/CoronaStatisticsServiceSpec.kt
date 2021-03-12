@@ -22,7 +22,7 @@ internal class CoronaStatisticsServiceSpec : Spek({
 
         val client = mock<HttpClient>()
 
-        val service = DefaultCoronaStatisticsService(client)
+        val service = DefaultCoronaStatisticsService()
 
         beforeEachTest { reset(client) }
 

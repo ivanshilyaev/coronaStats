@@ -4,43 +4,29 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ivanshilyaev.demo.dto.CoronaStatisticsDto
 import com.ivanshilyaev.demo.entity.CoronaStatistics
-import com.ivanshilyaev.demo.entity.CountryStatistics
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
+import com.ivanshilyaev.demo.http.CustomHttpClient
+import com.ivanshilyaev.demo.mapper.EntityMapper
+import org.springframework.beans.factory.annotation.Autowired
 
-private const val API_URI = "https://corona-api.com/countries"
+class DefaultCoronaStatisticsService() : CoronaStatisticsService {
 
-class DefaultCoronaStatisticsService(
-    private val client: HttpClient = HttpClient.newHttpClient()
-) : CoronaStatisticsService {
+    @Autowired
+    private lateinit var customHttpClient: CustomHttpClient
+
+    @Autowired
+    private lateinit var entityMapper: EntityMapper
+
+    companion object {
+        const val API_URI = "https://corona-api.com/countries"
+    }
 
     override fun getAllStatistics(): CoronaStatistics {
 
-        val request = HttpRequest.newBuilder(
-            URI.create(API_URI)
-        )
-            .header("accept", "application/json")
-            .build()
-        val apiResponse = client.send(request, HttpResponse.BodyHandlers.ofString())
-
+        val apiData = customHttpClient.sendRequest(API_URI).body()
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        val dto = mapper.readValue(apiResponse.body(), CoronaStatisticsDto::class.java)
-
-        val data = dto.data.map {
-            CountryStatistics(
-                it.name,
-                it.updatedAt,
-                it.statisticsTodayToday.deaths,
-                it.statisticsTodayToday.confirmed,
-                it.generalStatistics.deaths,
-                it.generalStatistics.confirmed,
-                it.generalStatistics.recovered,
-                it.generalStatistics.critical
-            )
-        }
+        val dto = mapper.readValue(apiData, CoronaStatisticsDto::class.java)
+        val data = dto.data.map { entityMapper.mapCountryStatistics(it) }
 
         return CoronaStatistics(data)
     }

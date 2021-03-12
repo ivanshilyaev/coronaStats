@@ -16,6 +16,10 @@ class CoronaStatisticsController() {
     @GetMapping("/")
     fun findAll(): String {
 
-        return coronaStatisticsService.getAllStatistics().toString()
+        return try {
+            coronaStatisticsService.getAllStatistics().toString()
+        } catch (e: Exception) {
+            "Error"
+        }
     }
 }

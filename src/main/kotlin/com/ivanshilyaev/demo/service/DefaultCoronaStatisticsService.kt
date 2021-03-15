@@ -20,22 +20,23 @@ class DefaultCoronaStatisticsService() : CoronaStatisticsService {
     private lateinit var entityMapper: EntityMapper
 
     companion object {
+
         const val API_URI = "https://corona-api.com/countries"
     }
 
     override fun getAllStatistics(): CoronaStatistics {
 
-        val apiData = customHttpClient.sendRequest(API_URI).body()
+        val apiData = customHttpClient.sendRequest(API_URI)
         logger.info { "Retrieve data from http response" }
 
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        val dto = mapper.readValue(apiData, CoronaStatisticsDto::class.java)
+        val coronaStatisticsDto = mapper.readValue(apiData, CoronaStatisticsDto::class.java)
         logger.info { "Map data from json to dto" }
 
-        val data = dto.data.map { entityMapper.mapCountryStatistics(it) }
+        val countryStatistics = coronaStatisticsDto.data.map { entityMapper.mapCountryStatistics(it) }
         logger.info { "Map data from dto to entity" }
 
-        return CoronaStatistics(data)
+        return CoronaStatistics(countryStatistics)
     }
 }

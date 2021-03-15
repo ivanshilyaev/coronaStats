@@ -11,7 +11,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/api/statistics")
-class CoronaStatisticsController() {
+class CoronaStatisticsController {
 
     @Autowired
     private lateinit var coronaStatisticsService: CoronaStatisticsService

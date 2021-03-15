@@ -5,19 +5,24 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
-class DefaultCustomHttpClient : CustomHttpClient {
+class DefaultCustomHttpClient(
+    private val client: HttpClient
+) : CustomHttpClient {
 
-    override fun sendRequest(uri: String): HttpResponse<String> {
+    override fun sendRequest(uri: String): String {
 
-        val client: HttpClient = HttpClient.newHttpClient()
-        val request = HttpRequest.newBuilder(
-            URI.create(uri)
-        )
-            .header("accept", "application/json")
-            .build()
+        try {
+            val request = HttpRequest.newBuilder(
+                URI.create(uri)
+            )
+                .header("accept", "application/json")
+                .build()
+            val responseBody = client.send(request, HttpResponse.BodyHandlers.ofString()).body()
+            if (responseBody == null || responseBody.isEmpty()) {
+                throw CustomHttpClientException("Invalid response body")
+            }
 
-        return try {
-            client.send(request, HttpResponse.BodyHandlers.ofString())
+            return responseBody
         } catch (e: Exception) {
             throw CustomHttpClientException("Couldn't send api request")
         }

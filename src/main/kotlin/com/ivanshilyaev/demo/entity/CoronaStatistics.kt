@@ -1,5 +1,5 @@
 package com.ivanshilyaev.demo.entity
 
-data class CoronaStatistics (
+data class CoronaStatistics(
     val data: List<CountryStatistics>
 )

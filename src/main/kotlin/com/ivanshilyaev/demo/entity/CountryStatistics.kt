@@ -1,6 +1,6 @@
 package com.ivanshilyaev.demo.entity
 
-data class CountryStatistics (
+data class CountryStatistics(
     val name: String,
     val updatedAt: String,
     val deathsToday: Int,

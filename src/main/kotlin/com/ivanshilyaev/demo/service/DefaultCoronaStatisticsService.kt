@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 private val logger = KotlinLogging.logger {}
 
-class DefaultCoronaStatisticsService() : CoronaStatisticsService {
+class DefaultCoronaStatisticsService : CoronaStatisticsService {
 
     @Autowired
     private lateinit var customHttpClient: CustomHttpClient

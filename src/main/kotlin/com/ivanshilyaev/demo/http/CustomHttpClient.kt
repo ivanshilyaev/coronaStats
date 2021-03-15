@@ -1,8 +1,6 @@
 package com.ivanshilyaev.demo.http
 
-import java.net.http.HttpResponse
-
 interface CustomHttpClient {
 
-    fun sendRequest(uri: String) : String
+    fun sendRequest(uri: String): String
 }
